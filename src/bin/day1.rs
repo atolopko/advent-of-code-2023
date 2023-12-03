@@ -16,23 +16,29 @@ Consider your entire calibration document. What is the sum of all of the calibra
 use std::path::Path;
 use std::fs;
 
-fn day1() {
+fn day1() -> u32 {
     let path = Path::new("data/day1.txt");
     let lines = fs::read_to_string(path).unwrap();
     let lines_itr = lines.lines();
     let mut answer = 0;
+    let parse_digit = |s: &str, rev: bool| -> u16 {
+        let find_fn = match rev {
+            true => str::rfind,
+            false => str::find,
+        };
+        let d_idx = find_fn(s, |c: char| c.is_ascii_digit()).unwrap();
+        s.get(d_idx..(d_idx+1)).unwrap().parse::<u16>().unwrap().into()
+    };
     for line in lines_itr {
-        let tens_idx = line.find(|c: char| c.is_digit(10)).unwrap();
-        let ones_idx = line.rfind(|c: char| c.is_digit(10)).unwrap();
-        let tens: u16 = line.get(tens_idx..(tens_idx+1)).unwrap().parse().unwrap();
-        let ones: u16 = line.get(ones_idx..(ones_idx+1)).unwrap().parse().unwrap();
-        let value = tens * 10 + ones;
+        let ones = parse_digit(&line, true);
+        let tens = parse_digit(&line, false);
+        let value: u32 = (tens * 10 + ones).into();
         // println!("{} -> {}", line, value);
         answer += value;
     }
-    println!("{}", answer);
+    answer
 }
 
 fn main() {
-    day1();
+    println!("Answer: {}", day1());
 }
