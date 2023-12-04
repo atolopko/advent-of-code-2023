@@ -13,26 +13,40 @@ In this example, the calibration values of these four lines are 12, 38, 15, and 
 Consider your entire calibration document. What is the sum of all of the calibration values?
 */
 
-use std::path::Path;
 use std::fs;
+use std::path::Path;
+
+const DIGIT_NAMES: [&str; 9] = [
+    "one", "two", "three", "four", "five", "six", "seven", "eight", "nine",
+];
+
+/// Replace occurrences of digit names ("one" through "nine") with their numeric representations.
+/// Proceeds left to right, thereby giving preference to the first match ("oneight" will become "1ight").
+fn parse_digit(s: &str, rev: bool) -> u32 {
+    for i in 0..s.len() {
+        let p = if rev { s.len() - (i + 1) } else { i };
+        for (d, digit_name) in (1..=9).zip(DIGIT_NAMES.iter()) {
+            if s.get(p..(p + digit_name.len()))
+                .is_some_and(|ss| ss.starts_with(digit_name))
+                || s.get(p..(p + 1))
+                    .is_some_and(|ss| ss.starts_with(d.to_string().as_str()))
+            {
+                return d;
+            }
+        }
+    }
+    panic!("no digits found")
+}
 
 fn day1() -> u32 {
     let path = Path::new("data/day1.txt");
     let lines = fs::read_to_string(path).unwrap();
     let lines_itr = lines.lines();
-    let mut answer = 0;
-    let parse_digit = |s: &str, rev: bool| -> u16 {
-        let find_fn = match rev {
-            true => str::rfind,
-            false => str::find,
-        };
-        let d_idx = find_fn(s, |c: char| c.is_ascii_digit()).unwrap();
-        s.get(d_idx..(d_idx+1)).unwrap().parse::<u16>().unwrap().into()
-    };
+    let mut answer: u32 = 0;
     for line in lines_itr {
-        let ones = parse_digit(&line, true);
-        let tens = parse_digit(&line, false);
-        let value: u32 = (tens * 10 + ones).into();
+        let ones = parse_digit(line, true);
+        let tens = parse_digit(line, false);
+        let value = tens * 10 + ones;
         // println!("{} -> {}", line, value);
         answer += value;
     }
