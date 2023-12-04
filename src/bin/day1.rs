@@ -20,15 +20,16 @@ const DIGIT_NAMES: [&str; 9] = [
     "one", "two", "three", "four", "five", "six", "seven", "eight", "nine",
 ];
 
-/// Replace occurrences of digit names ("one" through "nine") with their numeric representations.
-/// Proceeds left to right, thereby giving preference to the first match ("oneight" will become "1ight").
+/// Finds the first digit in the string, where digit can either be the numeric character or
+/// the full name of the digit name ("one" through "nine"), and returns the numeric value.
+/// Can optionally be run in reverse, finding the last digit in the string.
 fn parse_digit(s: &str, rev: bool) -> u32 {
     for i in 0..s.len() {
-        let p = if rev { s.len() - (i + 1) } else { i };
+        let pos = if rev { s.len() - (i + 1) } else { i };
         for (d, digit_name) in (1..=9).zip(DIGIT_NAMES.iter()) {
-            if s.get(p..(p + digit_name.len()))
+            if s.get(pos..(pos + digit_name.len()))
                 .is_some_and(|ss| ss.starts_with(digit_name))
-                || s.get(p..(p + 1))
+                || s.get(pos..(pos + 1))
                     .is_some_and(|ss| ss.starts_with(d.to_string().as_str()))
             {
                 return d;
