@@ -23,9 +23,9 @@ pub fn day2() -> u32 {
     answer
 }
 
-struct Game {
+/* struct Game {
     draws: [u8; 3],
-}
+} */
 
 fn parse_game(line: &str) -> u32 {
     let mut id_draws = line.split(":");
