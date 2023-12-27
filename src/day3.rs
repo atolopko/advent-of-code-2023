@@ -61,13 +61,12 @@ fn is_symbol_adjacent_str(i1: usize, i2: usize, j: usize, rows: &Vec<&[u8]>, row
 
 pub fn day3b() -> u32 {
     let path = Path::new("data/day3.txt");
-    let rows_iter = fs::read_to_string(path).unwrap();
+    let input = fs::read_to_string(path).unwrap();
     // Add an extra column to simplify end-of-line processing
-    let rows_s: Vec<String> = rows_iter.lines().map(|l| -> String { String::from(l) + "." }).collect();
+    let rows_s: Vec<String> = input.lines().map(|l| -> String { String::from(l) + "." }).collect();
     let rows: Vec<&[u8]> = rows_s.iter().map(|s| s.as_bytes()).collect();
     let row_len = rows.get(0).unwrap().len();
     let mut candidate_gears: MultiMap<(usize, usize), u32> = MultiMap::new();
-
 
     for (j, row) in zip(0..rows.len(), rows.clone()) {
         let mut i_start: i32 = -1;
@@ -93,7 +92,7 @@ pub fn day3b() -> u32 {
         }
     }
     let mut result: u32 = 0;
-    for (symb_coord, part_numbers) in candidate_gears {
+    for (_symb_coord, part_numbers) in candidate_gears {
         // println!("{:?}: {:?}", symb_coord, part_numbers);
         if part_numbers.len() > 1 {
             result += part_numbers.iter().product::<u32>();
