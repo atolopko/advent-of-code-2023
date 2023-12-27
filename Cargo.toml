@@ -7,3 +7,4 @@ edition = "2021"
 
 
 [dependencies]
+multimap = "0.9.1"
