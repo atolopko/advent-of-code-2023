@@ -25,15 +25,6 @@
 			"problemMatcher": [
 				"$rustc"
 			],
-			"group": "build",
-			"label": "rust: cargo build"
-		},
-		{
-			"type": "cargo",
-			"command": "build",
-			"problemMatcher": [
-				"$rustc"
-			],
 			"group": {
 				"kind": "build",
 				"isDefault": true
