@@ -43,6 +43,15 @@ pub fn day4a() -> u32 {
     answer
 }
 
+
+/*
+[Y]ou win copies of the scratchcards below the winning card equal to the number of matches. So, if card 10 were to have 5 matching numbers, you would win one copy each of cards 11, 12, 13, 14, and 15.
+
+Copies of scratchcards are scored like normal scratchcards and have the same card number as the card they copied. So, if you win a copy of card 10 and it has 5 matching numbers, it would then win a copy of the same cards that the original card 10 won: cards 11, 12, 13, 14, and 15. This process repeats until none of the copies cause you to win any more ca
+
+Process all of the original and copied scratchcards until no more scratchcards are won. Including the original set of scratchcards, how many total scratchcards do you end up with?
+ */
+
 pub fn day4b() -> u32 {
     let path = Path::new("data/day4.txt");
     let lines = fs::read_to_string(path).unwrap();
